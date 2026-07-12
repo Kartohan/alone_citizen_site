@@ -103,9 +103,10 @@ a {
   top: 0;
   left: 0;
   z-index: 5;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
+  column-gap: clamp(16px, 3vw, 34px);
   width: 100%;
   padding: 18px clamp(14px, 3vw, 34px) 12px;
   background: rgba(12, 13, 18, 0.2);
@@ -114,10 +115,9 @@ a {
 }
 
 .brand {
-  position: absolute;
-  left: clamp(14px, 3vw, 34px);
   display: inline-flex;
   align-items: center;
+  justify-self: end;
   gap: 10px;
   min-width: max-content;
   color: var(--text);
@@ -140,7 +140,7 @@ a {
   display: flex;
   gap: 6px;
   justify-content: center;
-  max-width: min(680px, calc(100vw - 280px));
+  max-width: min(680px, 54vw);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -165,8 +165,7 @@ a {
 }
 
 .add-button {
-  position: absolute;
-  right: clamp(14px, 3vw, 34px);
+  justify-self: start;
   min-width: 52px;
   color: var(--text);
 }
@@ -184,8 +183,8 @@ a {
   z-index: 3;
   display: grid;
   align-items: end;
-  min-height: 112svh;
-  padding: 116px max(20px, calc((100vw - 1180px) / 2)) 22svh;
+  min-height: 104svh;
+  padding: 116px max(20px, calc((100vw - 1180px) / 2)) 16svh;
 }
 
 .hero::before {
@@ -195,7 +194,7 @@ a {
   content: "";
   background:
     radial-gradient(circle at 62% 34%, rgba(255, 212, 154, 0.32), transparent 19%),
-    linear-gradient(180deg, transparent 0 58%, rgba(0, 0, 0, 0.1) 74%, rgba(0, 0, 0, 0.36) 100%);
+    linear-gradient(180deg, transparent 0 56%, rgba(0, 0, 0, 0.1) 78%, rgba(0, 0, 0, 0.24) 100%);
   pointer-events: none;
 }
 
@@ -253,25 +252,15 @@ a {
   align-items: center;
   gap: 16px;
   width: min(1180px, calc(100% - 32px));
-  min-height: calc(100svh - 98px);
-  margin: -10svh auto 0;
-  padding-top: 86px;
+  min-height: calc(100svh - 88px);
+  margin: 0 auto;
+  padding-top: 74px;
   scroll-margin-top: 0;
 }
 
 .viewer::before {
-  position: absolute;
-  top: -14svh;
-  left: 50%;
-  z-index: -1;
-  width: 100vw;
-  height: 30svh;
-  content: "";
-  background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.22), transparent 68%);
-  filter: blur(30px);
-  opacity: 0.72;
-  pointer-events: none;
-  transform: translateX(-50%);
+  display: none;
+  content: none;
 }
 
 .photo-stage {
@@ -288,10 +277,10 @@ a {
   aspect-ratio: var(--frame-ratio, 4 / 5);
   max-width: 880px;
   margin: 0 auto;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 28px 80px var(--shadow);
+  box-shadow: none;
   background: transparent;
   transform: translateZ(0);
   transition: box-shadow 360ms ease, transform 360ms ease;
@@ -303,15 +292,12 @@ a {
 
 .photo-frame:hover,
 .photo-frame.is-timer-active {
-  box-shadow:
-    0 18px 62px var(--shadow),
-    0 0 34px color-mix(in srgb, var(--accent), transparent 56%);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .photo-frame:hover .photo-image,
 .photo-frame.is-timer-active .photo-image {
-  transform: scale(1.008);
+  transform: scale(1);
 }
 
 .photo-image {
@@ -331,23 +317,9 @@ a {
 }
 
 .photo-stage.is-changing .photo-image {
-  opacity: 0.08;
-  transform: scale(1.055);
-  filter: blur(10px) saturate(1.2);
-}
-
-.photo-glass {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 18%, transparent 86%, rgba(0, 0, 0, 0.12));
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 360ms ease;
-}
-
-.photo-frame:hover .photo-glass,
-.photo-frame.is-timer-active .photo-glass {
-  opacity: 1;
+  opacity: 0.16;
+  transform: scale(1.018);
+  filter: none;
 }
 
 .photo-actions {
@@ -645,20 +617,22 @@ a {
 
   .topbar {
     align-items: center;
-    justify-content: flex-start;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
     gap: 12px;
-    flex-wrap: wrap;
     padding: 14px 12px 12px;
   }
 
-  .brand,
+  .brand {
+    justify-self: start;
+  }
+
   .add-button {
-    position: static;
+    justify-self: end;
   }
 
   .theme-tabs {
     order: 3;
-    flex: 1 0 100%;
     max-width: 100%;
     justify-content: flex-start;
   }
