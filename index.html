@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alone Citizen - Atmospheric Photo Gallery</title>
+    <meta
+      name="description"
+      content="Atmospheric photo gallery for sunsets, moon, stars, clouds, sunrise, and city scenes."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="experience" data-theme="sunset">
+      <canvas class="sky-canvas" aria-hidden="true"></canvas>
+      <div class="ambient ambient-a" aria-hidden="true"></div>
+      <div class="ambient ambient-b" aria-hidden="true"></div>
+      <div class="moon-disc" aria-hidden="true"></div>
+
+      <header class="topbar" aria-label="Site header">
+        <a class="brand" href="#" aria-label="Alone Citizen home">
+          <span class="brand-mark"></span>
+          <span>Alone Citizen</span>
+        </a>
+        <nav class="theme-tabs" aria-label="Photo themes">
+          <button class="theme-tab is-active" type="button" data-filter="all">All</button>
+          <button class="theme-tab" type="button" data-filter="sunset">Sunset</button>
+          <button class="theme-tab" type="button" data-filter="sunrise">Sunrise</button>
+          <button class="theme-tab" type="button" data-filter="moon">Moon</button>
+          <button class="theme-tab" type="button" data-filter="clouds">Clouds</button>
+          <button class="theme-tab" type="button" data-filter="city">City</button>
+        </nav>
+        <button class="add-button" type="button">Add</button>
+      </header>
+
+      <section class="viewer" aria-label="Photo viewer">
+        <button class="nav-button prev" type="button" aria-label="Previous photo">‹</button>
+
+        <article class="photo-stage" aria-live="polite">
+          <div class="photo-frame">
+            <div class="photo-image" role="img" aria-label=""></div>
+            <div class="photo-glass"></div>
+          </div>
+          <div class="caption">
+            <p class="eyebrow"></p>
+            <h1></h1>
+            <p class="caption-text"></p>
+          </div>
+        </article>
+
+        <button class="nav-button next" type="button" aria-label="Next photo">›</button>
+      </section>
+
+      <footer class="filmstrip" aria-label="Photo list"></footer>
+
+      <dialog class="add-dialog" aria-labelledby="add-title">
+        <form class="add-form" method="dialog">
+          <div class="dialog-head">
+            <h2 id="add-title">Add photo</h2>
+            <button class="close-button" type="button" aria-label="Close">×</button>
+          </div>
+          <label>
+            <span>Image</span>
+            <input class="file-input" type="file" accept="image/*" required />
+          </label>
+          <label>
+            <span>Title</span>
+            <input class="title-input" type="text" maxlength="42" placeholder="Evening sky" />
+          </label>
+          <label>
+            <span>Theme</span>
+            <select class="theme-input">
+              <option value="sunset">Sunset</option>
+              <option value="sunrise">Sunrise</option>
+              <option value="clouds">Clouds</option>
+              <option value="moon">Moon</option>
+              <option value="stars">Stars</option>
+              <option value="city">City</option>
+            </select>
+          </label>
+          <button class="submit-button" type="submit">Preview</button>
+        </form>
+      </dialog>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
