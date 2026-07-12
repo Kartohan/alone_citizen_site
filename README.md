@@ -1,4 +1,4 @@
-# Alone Citizen Atmospheric Gallery
+# alone.citizen Atmospheric Gallery
 
 Static cinematic photo gallery with an intro screen, theme-based atmospheres,
 animated transitions, and responsive desktop/mobile controls.

@@ -283,8 +283,7 @@ const stage = document.querySelector(".photo-stage");
 const photoFrame = document.querySelector(".photo-frame");
 const photoImage = document.querySelector(".photo-image");
 const caption = {
-  title: document.querySelector(".photo-actions h2"),
-  meta: document.querySelector(".photo-meta"),
+  line: document.querySelector(".photo-caption"),
 };
 const filmstrip = document.querySelector(".filmstrip");
 const filmstripPrev = document.querySelector(".filmstrip-prev");
@@ -354,8 +353,7 @@ function setPhoto(index, immediate = false) {
         photoImage.style.setProperty("--photo-url", `url("${photo.url}")`);
       }
       photoImage.setAttribute("aria-label", `${photo.title}, ${photo.meta}`);
-      caption.title.textContent = photo.title;
-      caption.meta.textContent = `Тег: ${photo.meta} / Дата: ${photo.date || "не вказана"}`;
+      caption.line.textContent = `${photo.title} - ${photo.meta} / ${photo.date || "без дати"}`;
       renderFilmstrip();
       updateNavigationState();
       stage.classList.remove("is-changing");
@@ -596,6 +594,15 @@ window.addEventListener(
 
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("resize", updateNavigationState);
+
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+window.addEventListener("pageshow", () => {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+});
+
 resizeCanvas();
 setPhoto(0, true);
 animateSky();
