@@ -104,7 +104,8 @@ a {
   left: 0;
   z-index: 5;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, max-content);
+  justify-content: center;
   align-items: center;
   column-gap: clamp(16px, 3vw, 34px);
   width: 100%;
@@ -117,7 +118,6 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
-  justify-self: end;
   gap: 10px;
   min-width: max-content;
   color: var(--text);
@@ -149,7 +149,6 @@ a {
   display: none;
 }
 
-.add-button,
 .theme-tab {
   min-height: 36px;
   padding: 0 13px;
@@ -164,15 +163,8 @@ a {
   font-size: 0.78rem;
 }
 
-.add-button {
-  justify-self: start;
-  min-width: 52px;
-  color: var(--text);
-}
-
 .theme-tab.is-active,
-.theme-tab:hover,
-.add-button:hover {
+.theme-tab:hover {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.42);
   color: var(--text);
@@ -195,6 +187,16 @@ a {
   background:
     radial-gradient(circle at 62% 34%, rgba(255, 212, 154, 0.32), transparent 19%),
     linear-gradient(180deg, transparent 0 56%, rgba(0, 0, 0, 0.1) 78%, rgba(0, 0, 0, 0.24) 100%);
+  pointer-events: none;
+}
+
+.hero::after {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: clamp(140px, 24svh, 260px);
+  content: "";
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.22));
   pointer-events: none;
 }
 
@@ -254,8 +256,9 @@ a {
   width: min(1180px, calc(100% - 32px));
   min-height: auto;
   margin: 0 auto;
-  padding: clamp(126px, 18svh, 190px) 0 34px;
+  padding: clamp(94px, 14svh, 150px) 0 34px;
   scroll-margin-top: 84px;
+  overflow-anchor: none;
 }
 
 .viewer::before {
@@ -267,7 +270,10 @@ a {
   display: grid;
   grid-template-columns: minmax(280px, 0.92fr);
   align-items: center;
+  align-content: start;
   gap: 18px;
+  min-height: calc(clamp(430px, 74svh, 820px) + 60px);
+  overflow-anchor: none;
 }
 
 .photo-frame {
@@ -278,13 +284,17 @@ a {
   max-width: 880px;
   margin: 0 auto;
   border: 0;
-  border-radius: 0;
+  border-radius: 7px;
   overflow: hidden;
-  box-shadow: none !important;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   background: transparent;
-  filter: none !important;
+  filter: none;
   transform: none;
-  transition: none;
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    border-radius 240ms ease;
+  will-change: transform;
 }
 
 .photo-frame.is-timer-active {
@@ -293,7 +303,10 @@ a {
 
 .photo-frame:hover,
 .photo-frame.is-timer-active {
-  transform: none;
+  transform: translateY(-6px);
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.22),
+    0 0 34px color-mix(in srgb, var(--accent), transparent 72%);
 }
 
 .photo-frame:hover .photo-image,
@@ -310,9 +323,10 @@ a {
   object-fit: contain;
   object-position: var(--photo-position, center);
   border: 0;
+  border-radius: inherit;
   background: transparent;
   transform: scale(1);
-  filter: none !important;
+  filter: none;
   transition: opacity 420ms ease;
 }
 
@@ -323,7 +337,7 @@ a {
 .photo-stage.is-changing .photo-image {
   opacity: 0;
   transform: scale(1);
-  filter: none !important;
+  filter: none;
 }
 
 .photo-actions {
@@ -621,22 +635,18 @@ a {
 
   .topbar {
     align-items: center;
-    grid-template-columns: auto auto;
-    justify-content: space-between;
+    grid-template-columns: auto;
+    justify-content: center;
     gap: 12px;
     padding: 14px 12px 12px;
   }
 
   .brand {
-    justify-self: start;
-  }
-
-  .add-button {
-    justify-self: end;
+    justify-self: center;
   }
 
   .theme-tabs {
-    order: 3;
+    order: 2;
     max-width: 100%;
     justify-content: flex-start;
   }
@@ -660,13 +670,14 @@ a {
     grid-template-columns: 1fr;
     width: min(100% - 24px, 640px);
     min-height: auto;
-    padding: clamp(112px, 16svh, 156px) 0 8px;
+    padding: clamp(86px, 13svh, 132px) 0 8px;
     scroll-margin-top: 82px;
   }
 
   .photo-stage {
     grid-template-columns: 1fr;
     gap: 18px;
+    min-height: calc(clamp(330px, 62svh, 560px) + 58px);
   }
 
   .photo-frame {

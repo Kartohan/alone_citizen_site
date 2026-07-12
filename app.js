@@ -313,7 +313,7 @@ let isSpaceHolding = false;
 const AUTOPLAY_DELAY = 7000;
 
 function isPaused() {
-  return isPointerHolding || isSpaceHolding || dialog.open;
+  return isPointerHolding || isSpaceHolding || Boolean(dialog?.open);
 }
 
 function filteredPhotos() {
@@ -499,7 +499,7 @@ tabs.forEach((tab) => {
   });
 });
 
-addButton.addEventListener("click", () => {
+addButton?.addEventListener("click", () => {
   if (typeof dialog.showModal === "function") {
     dialog.showModal();
   }
