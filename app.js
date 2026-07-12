@@ -109,6 +109,116 @@ const photos = [
     frame: "3 / 4",
     position: "50% 43%",
   },
+  {
+    title: "Golden Dome",
+    theme: "city",
+    meta: "City / blue winter",
+    text: "A gold dome cutting into a clean blue winter sky, bright and architectural.",
+    gradient:
+      "linear-gradient(160deg, #073b82 0%, #1376d6 45%, #f3d36a 80%, #eef3f7 100%)",
+    url: "./assets/mykhailivska-dome.jpg",
+    frame: "3 / 4",
+    position: "50% 42%",
+  },
+  {
+    title: "River Watch",
+    theme: "city",
+    meta: "City / winter river",
+    text: "A quiet statue looks over the frozen river toward the pale city skyline.",
+    gradient:
+      "linear-gradient(160deg, #d7edf7 0%, #9fb8c5 42%, #e9e1d4 74%, #52645c 100%)",
+    url: "./assets/dnipro-statue-view.jpg",
+    frame: "3 / 4",
+    position: "50% 48%",
+  },
+  {
+    title: "Blue Arch",
+    theme: "city",
+    meta: "City / monument sky",
+    text: "A bright arc of stone and shadow across a deep blue Kyiv sky.",
+    gradient:
+      "linear-gradient(160deg, #062b67 0%, #0d65c5 62%, #f1e7dd 92%)",
+    url: "./assets/friendship-arch-blue.jpg",
+    frame: "3 / 4",
+    position: "50% 42%",
+  },
+  {
+    title: "Winter Bridge",
+    theme: "sunrise",
+    meta: "Daylight / winter path",
+    text: "Long morning shadows stretch along a snowy bridge under open blue air.",
+    gradient:
+      "linear-gradient(160deg, #62b3ec 0%, #cfefff 46%, #ded8ca 72%, #9b5a3d 100%)",
+    url: "./assets/winter-bridge.jpg",
+    frame: "3 / 4",
+    position: "50% 52%",
+  },
+  {
+    title: "Red Moon",
+    theme: "moon",
+    meta: "Moon / eclipse dark",
+    text: "A red moon hangs alone in deep black, quiet and almost mineral.",
+    gradient:
+      "radial-gradient(circle at 48% 45%, #a85835 0 12%, transparent 24%), linear-gradient(160deg, #020205 0%, #0b0708 100%)",
+    url: "./assets/red-moon.jpg",
+    frame: "9 / 16",
+    position: "50% 40%",
+  },
+  {
+    title: "Clear Star Sky",
+    theme: "stars",
+    meta: "Stars / clean night",
+    text: "A dense field of stars on a cool, transparent night sky.",
+    gradient:
+      "linear-gradient(160deg, #020609 0%, #102432 54%, #23384b 100%)",
+    url: "./assets/clear-star-sky.jpg",
+    frame: "3 / 4",
+    position: "50% 48%",
+  },
+  {
+    title: "Soft City Sunset",
+    theme: "sunset",
+    meta: "Sunset / city haze",
+    text: "Warm orange light settles behind dark city blocks and thin power lines.",
+    gradient:
+      "linear-gradient(160deg, #6b7184 0%, #f4ae6f 48%, #e35b3d 74%, #17191f 100%)",
+    url: "./assets/soft-city-sunset.jpg",
+    frame: "16 / 7",
+    position: "50% 50%",
+  },
+  {
+    title: "Evening Crescent",
+    theme: "moon",
+    meta: "Moon / dusk gradient",
+    text: "A small golden crescent floats in a quiet gray and rose evening.",
+    gradient:
+      "linear-gradient(160deg, #18212e 0%, #4a4d56 58%, #8d6356 100%)",
+    url: "./assets/crescent-evening.jpg",
+    frame: "9 / 16",
+    position: "50% 48%",
+  },
+  {
+    title: "Red Skyline",
+    theme: "sunset",
+    meta: "Sunset / red clouds",
+    text: "A strong red evening sky over black building silhouettes and diagonal wires.",
+    gradient:
+      "linear-gradient(160deg, #2e2336 0%, #a94158 40%, #e24b2d 68%, #0b0c11 100%)",
+    url: "./assets/red-city-sunset.jpg",
+    frame: "16 / 7",
+    position: "50% 50%",
+  },
+  {
+    title: "Evening Road",
+    theme: "city",
+    meta: "City / dusk road",
+    text: "A city road carries the last violet light, headlights, and overhead wires.",
+    gradient:
+      "linear-gradient(160deg, #443757 0%, #b47797 48%, #f0a55e 72%, #171722 100%)",
+    url: "./assets/evening-road.jpg",
+    frame: "3 / 4",
+    position: "50% 58%",
+  },
 ];
 
 const themes = {

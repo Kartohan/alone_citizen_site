@@ -6,7 +6,7 @@ Static MVP for a cinematic photo gallery with theme-based atmospheres and animat
 
 Open `index.html` in a browser, or serve the folder with any static server.
 
-The first version already includes 10 real photos in `assets/`.
+The first version already includes 20 real photos in `assets/`.
 
 Photos are configured in `app.js`. Each item supports:
 
