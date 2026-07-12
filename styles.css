@@ -261,13 +261,15 @@ a {
 
 .viewer::before {
   position: absolute;
-  top: -18svh;
+  top: -14svh;
   left: 50%;
   z-index: -1;
   width: 100vw;
-  height: 36svh;
+  height: 30svh;
   content: "";
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16) 58%, transparent);
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.22), transparent 68%);
+  filter: blur(30px);
+  opacity: 0.72;
   pointer-events: none;
   transform: translateX(-50%);
 }
