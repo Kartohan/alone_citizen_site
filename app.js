@@ -18,7 +18,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #05070e 0%, #202837 58%, #c98c3e 100%)",
     url: "./assets/star-silhouette.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 46%",
   },
   {
@@ -29,7 +29,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #0b1221 0%, #243349 62%, #67412d 100%)",
     url: "./assets/moon-over-rooftops.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 52%",
   },
   {
@@ -62,7 +62,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #02060a 0%, #0b2d33 60%, #244944 100%)",
     url: "./assets/deep-star-field.jpg",
-    frame: "9 / 16",
+    frame: "720 / 1280",
     position: "50% 50%",
   },
   {
@@ -73,7 +73,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #010407 0%, #0a3a2e 57%, #6c8d25 100%)",
     url: "./assets/vineyard-stars.jpg",
-    frame: "3 / 4",
+    frame: "2250 / 4000",
     position: "50% 47%",
   },
   {
@@ -106,7 +106,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #0d65c5 0%, #38a0e8 44%, #8fd7dc 72%, #f3bf54 100%)",
     url: "./assets/andriivska-church.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 43%",
   },
   {
@@ -117,7 +117,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #073b82 0%, #1376d6 45%, #f3d36a 80%, #eef3f7 100%)",
     url: "./assets/mykhailivska-dome.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 42%",
   },
   {
@@ -128,7 +128,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #d7edf7 0%, #9fb8c5 42%, #e9e1d4 74%, #52645c 100%)",
     url: "./assets/dnipro-statue-view.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 48%",
   },
   {
@@ -139,7 +139,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #062b67 0%, #0d65c5 62%, #f1e7dd 92%)",
     url: "./assets/friendship-arch-blue.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 42%",
   },
   {
@@ -150,7 +150,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #62b3ec 0%, #cfefff 46%, #ded8ca 72%, #9b5a3d 100%)",
     url: "./assets/winter-bridge.jpg",
-    frame: "3 / 4",
+    frame: "1872 / 4056",
     position: "50% 52%",
   },
   {
@@ -161,7 +161,7 @@ const photos = [
     gradient:
       "radial-gradient(circle at 48% 45%, #a85835 0 12%, transparent 24%), linear-gradient(160deg, #020205 0%, #0b0708 100%)",
     url: "./assets/red-moon.jpg",
-    frame: "9 / 16",
+    frame: "1800 / 4000",
     position: "50% 40%",
   },
   {
@@ -172,7 +172,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #020609 0%, #102432 54%, #23384b 100%)",
     url: "./assets/clear-star-sky.jpg",
-    frame: "3 / 4",
+    frame: "2252 / 3997",
     position: "50% 48%",
   },
   {
@@ -194,7 +194,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #18212e 0%, #4a4d56 58%, #8d6356 100%)",
     url: "./assets/crescent-evening.jpg",
-    frame: "9 / 16",
+    frame: "1872 / 4056",
     position: "50% 48%",
   },
   {
@@ -216,7 +216,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #443757 0%, #b47797 48%, #f0a55e 72%, #171722 100%)",
     url: "./assets/evening-road.jpg",
-    frame: "3 / 4",
+    frame: "1800 / 4000",
     position: "50% 58%",
   },
 ];
@@ -347,7 +347,10 @@ function setPhoto(index, immediate = false) {
       photoImage.style.setProperty("--photo-position", photo.position || "center");
       photoFrame.style.setProperty("--photo-gradient", photo.gradient);
       photoFrame.style.setProperty("--photo-position", photo.position || "center");
+      const [frameW = "4", frameH = "5"] = (photo.frame || "4 / 5").split("/").map((part) => part.trim());
+      const frameAspect = Number(frameW) / Number(frameH);
       photoFrame.style.setProperty("--frame-ratio", photo.frame || "4 / 5");
+      photoFrame.style.setProperty("--frame-aspect", Number.isFinite(frameAspect) ? frameAspect : 0.8);
       photoImage.classList.toggle("has-url", Boolean(photo.url));
       if (photo.url) {
         photoImage.style.setProperty("--photo-url", `url("${photo.url}")`);

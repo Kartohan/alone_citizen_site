@@ -281,16 +281,16 @@ a {
 
 .photo-frame {
   position: relative;
-  width: 100%;
+  --frame-aspect: 0.8;
+  width: min(78vw, calc(74svh * var(--frame-aspect)), calc(820px * var(--frame-aspect)));
   aspect-ratio: var(--frame-ratio, 4 / 5);
-  max-width: min(78vw, 880px);
-  max-height: min(74svh, 820px);
+  max-width: 880px;
   margin: 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 28px 80px var(--shadow);
-  background: var(--photo-gradient, #111);
+  background: transparent;
   transform: translateZ(0);
   transition: box-shadow 360ms ease, transform 360ms ease;
 }
@@ -315,9 +315,8 @@ a {
 .photo-image {
   position: absolute;
   inset: 0;
-  background:
-    var(--photo-gradient),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.18), transparent 42%);
+  background-color: transparent;
+  background-image: var(--photo-gradient);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: var(--photo-position, center);
@@ -326,7 +325,7 @@ a {
 }
 
 .photo-image.has-url {
-  background-image: var(--photo-url), var(--photo-gradient);
+  background-image: var(--photo-url);
 }
 
 .photo-stage.is-changing .photo-image {
@@ -338,10 +337,15 @@ a {
 .photo-glass {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 22%, transparent 72%, rgba(0, 0, 0, 0.24)),
-    radial-gradient(circle at 50% 50%, transparent 54%, rgba(0, 0, 0, 0.3));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 18%, transparent 86%, rgba(0, 0, 0, 0.12));
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 360ms ease;
+}
+
+.photo-frame:hover .photo-glass,
+.photo-frame.is-timer-active .photo-glass {
+  opacity: 1;
 }
 
 .photo-actions {
