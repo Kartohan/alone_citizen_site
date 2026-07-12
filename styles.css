@@ -65,7 +65,7 @@ a {
   z-index: 1;
   opacity: 0.72;
   mix-blend-mode: screen;
-  filter: blur(2px);
+  filter: none;
   transition: opacity 800ms ease, transform 1200ms ease;
 }
 
@@ -183,8 +183,8 @@ a {
   z-index: 3;
   display: grid;
   align-items: end;
-  min-height: 104svh;
-  padding: 116px max(20px, calc((100vw - 1180px) / 2)) 16svh;
+  min-height: 100svh;
+  padding: 116px max(20px, calc((100vw - 1180px) / 2)) clamp(96px, 15svh, 168px);
 }
 
 .hero::before {
@@ -249,13 +249,13 @@ a {
   z-index: 4;
   display: grid;
   grid-template-columns: 54px minmax(0, 1fr) 54px;
-  align-items: center;
+  align-items: start;
   gap: 16px;
   width: min(1180px, calc(100% - 32px));
-  min-height: calc(100svh - 88px);
+  min-height: auto;
   margin: 0 auto;
-  padding-top: 74px;
-  scroll-margin-top: 0;
+  padding: clamp(126px, 18svh, 190px) 0 34px;
+  scroll-margin-top: 84px;
 }
 
 .viewer::before {
@@ -278,12 +278,13 @@ a {
   max-width: 880px;
   margin: 0 auto;
   border: 0;
-  border-radius: 4px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: none;
+  box-shadow: none !important;
   background: transparent;
-  transform: translateZ(0);
-  transition: box-shadow 360ms ease, transform 360ms ease;
+  filter: none !important;
+  transform: none;
+  transition: none;
 }
 
 .photo-frame.is-timer-active {
@@ -292,7 +293,7 @@ a {
 
 .photo-frame:hover,
 .photo-frame.is-timer-active {
-  transform: translateY(-3px);
+  transform: none;
 }
 
 .photo-frame:hover .photo-image,
@@ -303,23 +304,26 @@ a {
 .photo-image {
   position: absolute;
   inset: 0;
-  background-color: transparent;
-  background-image: var(--photo-gradient);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: var(--photo-position, center);
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: var(--photo-position, center);
+  border: 0;
+  background: transparent;
   transform: scale(1);
-  transition: opacity 520ms ease, transform 1200ms ease, filter 800ms ease;
+  filter: none !important;
+  transition: opacity 420ms ease;
 }
 
 .photo-image.has-url {
-  background-image: var(--photo-url);
+  visibility: visible;
 }
 
 .photo-stage.is-changing .photo-image {
-  opacity: 0.16;
-  transform: scale(1.018);
-  filter: none;
+  opacity: 0;
+  transform: scale(1);
+  filter: none !important;
 }
 
 .photo-actions {
@@ -638,8 +642,8 @@ a {
   }
 
   .hero {
-    min-height: 112svh;
-    padding: 128px 16px 22svh;
+    min-height: 100svh;
+    padding: 128px 16px clamp(96px, 17svh, 150px);
   }
 
   .hero h1 {
@@ -655,8 +659,9 @@ a {
   .viewer {
     grid-template-columns: 1fr;
     width: min(100% - 24px, 640px);
-    min-height: calc(100svh - 84px);
-    padding: 96px 0 8px;
+    min-height: auto;
+    padding: clamp(112px, 16svh, 156px) 0 8px;
+    scroll-margin-top: 82px;
   }
 
   .photo-stage {

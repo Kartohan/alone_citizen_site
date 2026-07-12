@@ -353,9 +353,11 @@ function setPhoto(index, immediate = false) {
       photoFrame.style.setProperty("--frame-aspect", Number.isFinite(frameAspect) ? frameAspect : 0.8);
       photoImage.classList.toggle("has-url", Boolean(photo.url));
       if (photo.url) {
-        photoImage.style.setProperty("--photo-url", `url("${photo.url}")`);
+        photoImage.src = photo.url;
+      } else {
+        photoImage.removeAttribute("src");
       }
-      photoImage.setAttribute("aria-label", `${photo.title}, ${photo.meta}`);
+      photoImage.alt = `${photo.title}, ${photo.meta}`;
       caption.line.textContent = `${photo.title} - ${photo.meta} / ${photo.date || "без дати"}`;
       renderFilmstrip();
       updateNavigationState();
