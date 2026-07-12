@@ -280,16 +280,25 @@ const themes = {
 
 const experience = document.querySelector(".experience");
 const stage = document.querySelector(".photo-stage");
+const photoFrame = document.querySelector(".photo-frame");
 const photoImage = document.querySelector(".photo-image");
 const caption = {
   eyebrow: document.querySelector(".eyebrow"),
-  title: document.querySelector(".caption h1"),
-  text: document.querySelector(".caption-text"),
+  title: document.querySelector(".photo-actions h2"),
 };
 const filmstrip = document.querySelector(".filmstrip");
+const filmstripPrev = document.querySelector(".filmstrip-prev");
+const filmstripNext = document.querySelector(".filmstrip-next");
 const tabs = [...document.querySelectorAll(".theme-tab")];
 const canvas = document.querySelector(".sky-canvas");
 const ctx = canvas.getContext("2d");
+const timerCursor = document.querySelector(".timer-cursor");
+const detailsButton = document.querySelector(".details-button");
+const detailsDialog = document.querySelector(".details-dialog");
+const detailsClose = document.querySelector(".details-close");
+const detailsMeta = document.querySelector(".details-meta");
+const detailsTitle = document.querySelector("#details-title");
+const detailsText = document.querySelector(".details-text");
 const addButton = document.querySelector(".add-button");
 const dialog = document.querySelector(".add-dialog");
 const closeButton = document.querySelector(".close-button");
@@ -303,6 +312,16 @@ let activeFilter = "all";
 let particles = [];
 let width = 0;
 let height = 0;
+let currentPhoto = photos[0];
+let autoplayStartedAt = performance.now();
+let pauseStartedAt = 0;
+let isPointerHolding = false;
+let isSpaceHolding = false;
+const AUTOPLAY_DELAY = 7000;
+
+function isPaused() {
+  return isPointerHolding || isSpaceHolding || dialog.open || detailsDialog.open;
+}
 
 function filteredPhotos() {
   if (activeFilter === "all") return photos;
@@ -324,6 +343,8 @@ function setPhoto(index, immediate = false) {
   if (!list.length) return;
   activeIndex = (index + list.length) % list.length;
   const photo = list[activeIndex];
+  currentPhoto = photo;
+  autoplayStartedAt = performance.now();
 
   stage.classList.add("is-changing");
   window.setTimeout(
@@ -331,15 +352,19 @@ function setPhoto(index, immediate = false) {
       applyTheme(photo.theme);
       photoImage.style.setProperty("--photo-gradient", photo.gradient);
       photoImage.style.setProperty("--photo-position", photo.position || "center");
-      document.querySelector(".photo-frame").style.setProperty("--frame-ratio", photo.frame || "4 / 5");
+      photoFrame.style.setProperty("--photo-gradient", photo.gradient);
+      photoFrame.style.setProperty("--photo-position", photo.position || "center");
+      photoFrame.style.setProperty("--frame-ratio", photo.frame || "4 / 5");
       photoImage.classList.toggle("has-url", Boolean(photo.url));
       if (photo.url) {
         photoImage.style.setProperty("--photo-url", `url("${photo.url}")`);
+        photoFrame.style.setProperty("--photo-url", `url("${photo.url}")`);
+      } else {
+        photoFrame.style.removeProperty("--photo-url");
       }
       photoImage.setAttribute("aria-label", `${photo.title}, ${photo.meta}`);
       caption.eyebrow.textContent = photo.meta;
       caption.title.textContent = photo.title;
-      caption.text.textContent = photo.text;
       renderFilmstrip();
       stage.classList.remove("is-changing");
     },
@@ -364,10 +389,32 @@ function renderFilmstrip() {
     button.addEventListener("click", () => setPhoto(index));
     filmstrip.appendChild(button);
   });
+  filmstrip.querySelector(".thumb.is-active")?.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+    inline: "center",
+  });
 }
 
 function move(direction) {
   setPhoto(activeIndex + direction);
+}
+
+function scrollFilmstrip(direction) {
+  filmstrip.scrollBy({
+    left: direction * Math.max(220, filmstrip.clientWidth * 0.72),
+    behavior: "smooth",
+  });
+}
+
+function showDetails() {
+  if (!currentPhoto) return;
+  detailsMeta.textContent = `${currentPhoto.meta} / ${currentPhoto.date || "Дата буде додана"}`;
+  detailsTitle.textContent = currentPhoto.title;
+  detailsText.textContent = currentPhoto.text;
+  if (typeof detailsDialog.showModal === "function") {
+    detailsDialog.showModal();
+  }
 }
 
 function resizeCanvas() {
@@ -416,12 +463,33 @@ function animateSky() {
   requestAnimationFrame(animateSky);
 }
 
+function animateAutoplay(now) {
+  if (isPaused()) {
+    if (!pauseStartedAt) pauseStartedAt = now;
+    timerCursor.classList.add("is-paused");
+  } else {
+    if (pauseStartedAt) {
+      autoplayStartedAt += now - pauseStartedAt;
+      pauseStartedAt = 0;
+    }
+    timerCursor.classList.remove("is-paused");
+    const elapsed = now - autoplayStartedAt;
+    const progress = Math.min(1, elapsed / AUTOPLAY_DELAY);
+    timerCursor.style.setProperty("--progress", progress.toFixed(3));
+    if (elapsed >= AUTOPLAY_DELAY) {
+      move(1);
+    }
+  }
+  requestAnimationFrame(animateAutoplay);
+}
+
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
     tabs.forEach((item) => item.classList.remove("is-active"));
     tab.classList.add("is-active");
     activeFilter = tab.dataset.filter;
     setPhoto(0);
+    document.querySelector("#gallery").scrollIntoView({ behavior: "smooth" });
   });
 });
 
@@ -432,6 +500,10 @@ addButton.addEventListener("click", () => {
 });
 
 closeButton.addEventListener("click", () => dialog.close());
+detailsButton.addEventListener("click", showDetails);
+detailsClose.addEventListener("click", () => detailsDialog.close());
+filmstripPrev.addEventListener("click", () => scrollFilmstrip(-1));
+filmstripNext.addEventListener("click", () => scrollFilmstrip(1));
 
 addForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -460,6 +532,37 @@ document.querySelector(".next").addEventListener("click", () => move(1));
 window.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft") move(-1);
   if (event.key === "ArrowRight") move(1);
+  if (event.code === "Space" && !event.repeat) {
+    event.preventDefault();
+    isSpaceHolding = true;
+  }
+});
+
+window.addEventListener("keyup", (event) => {
+  if (event.code === "Space") {
+    event.preventDefault();
+    isSpaceHolding = false;
+  }
+});
+
+photoFrame.addEventListener("pointerdown", (event) => {
+  if (event.button !== 0 && event.pointerType === "mouse") return;
+  isPointerHolding = true;
+  photoFrame.setPointerCapture?.(event.pointerId);
+});
+
+photoFrame.addEventListener("pointerup", () => {
+  isPointerHolding = false;
+});
+
+photoFrame.addEventListener("pointercancel", () => {
+  isPointerHolding = false;
+});
+
+window.addEventListener("pointermove", (event) => {
+  if (event.pointerType === "touch") return;
+  timerCursor.classList.add("is-visible");
+  timerCursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
 });
 
 let touchStartX = 0;
@@ -483,3 +586,4 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 setPhoto(0, true);
 animateSky();
+requestAnimationFrame(animateAutoplay);

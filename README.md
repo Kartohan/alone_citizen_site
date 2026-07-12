@@ -1,12 +1,22 @@
 # Alone Citizen Atmospheric Gallery
 
-Static MVP for a cinematic photo gallery with theme-based atmospheres and animated transitions.
+Static cinematic photo gallery with an intro screen, theme-based atmospheres,
+animated transitions, and responsive desktop/mobile controls.
 
 ## How To Use
 
 Open `index.html` in a browser, or serve the folder with any static server.
 
 The first version already includes 20 real photos in `assets/`.
+
+## Controls
+
+- Mouse wheel or the thumbnail arrows scroll the filmstrip.
+- Main arrows, keyboard arrows, or mobile swipe change the active photo.
+- Photos advance automatically every 7 seconds.
+- Hold the left mouse button on the photo, or hold Space, to pause autoplay.
+- The circular cursor indicator shows time left before the next photo.
+- The `Опис` button opens the current photo details.
 
 Photos are configured in `app.js`. Each item supports:
 
