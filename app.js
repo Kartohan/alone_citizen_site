@@ -1,51 +1,113 @@
 const photos = [
   {
-    title: "Warm Horizon",
-    theme: "sunset",
-    meta: "Sunset / field light",
-    text: "A soft golden scene for evening photos, with warm glow and slow airborne sparks.",
-    gradient:
-      "linear-gradient(160deg, #2f1a2d 0%, #a64d46 42%, #f2b05f 72%, #ffe1a8 100%)",
-  },
-  {
-    title: "First Light",
-    theme: "sunrise",
-    meta: "Sunrise / pale air",
-    text: "A cleaner morning preset with mist, gentle blue shadows, and a quiet amber edge.",
-    gradient:
-      "linear-gradient(155deg, #394d73 0%, #86a7c2 42%, #ffd6a1 76%, #fff0d6 100%)",
-  },
-  {
-    title: "Cloud Drift",
-    theme: "clouds",
-    meta: "Clouds / moving sky",
-    text: "Layered daylight motion for cloud studies, open skies, and changing weather.",
-    gradient:
-      "linear-gradient(150deg, #6e92b8 0%, #c9dbea 46%, #f6f1e8 62%, #7e9bb7 100%)",
-  },
-  {
-    title: "Quiet Moon",
+    title: "Moon Beside Brick",
     theme: "moon",
-    meta: "Moon / blue night",
-    text: "The scene falls into a colder palette, with a visible moon and slow silver particles.",
+    meta: "Moon / city edge",
+    text: "A pale moon held between quiet blue air, red brick, and thin black wires.",
     gradient:
-      "linear-gradient(160deg, #060915 0%, #182845 48%, #566982 78%, #d6deec 100%)",
+      "linear-gradient(160deg, #162233 0%, #527084 48%, #9b704f 100%)",
+    url: "./assets/moon-city-full.jpg",
+    frame: "3 / 4",
+    position: "52% 50%",
   },
   {
-    title: "Star Field",
+    title: "Angel Under Stars",
     theme: "stars",
-    meta: "Stars / deep sky",
-    text: "A darker star preset for night photos, with small parallax points and low contrast.",
+    meta: "Stars / silhouette",
+    text: "A dark monument against a scattered night sky, with a last warm line near the horizon.",
     gradient:
-      "radial-gradient(circle at 68% 24%, #dbe8ff 0 1%, transparent 2%), linear-gradient(160deg, #03040a 0%, #10172d 52%, #263356 100%)",
+      "linear-gradient(160deg, #05070e 0%, #202837 58%, #c98c3e 100%)",
+    url: "./assets/star-silhouette.jpg",
+    frame: "3 / 4",
+    position: "50% 46%",
   },
   {
-    title: "City Afterglow",
-    theme: "city",
-    meta: "City / evening lights",
-    text: "Urban dusk colors, subtle window light, and a slower transition for city silhouettes.",
+    title: "Half Moon Over Roofs",
+    theme: "moon",
+    meta: "Moon / blue evening",
+    text: "A small half moon floats over sleeping rooftops in a deep evening sky.",
     gradient:
-      "linear-gradient(160deg, #10121d 0%, #343348 44%, #be6c48 73%, #f2b56b 100%)",
+      "linear-gradient(160deg, #0b1221 0%, #243349 62%, #67412d 100%)",
+    url: "./assets/moon-over-rooftops.jpg",
+    frame: "3 / 4",
+    position: "50% 52%",
+  },
+  {
+    title: "Golden Cloud Bank",
+    theme: "clouds",
+    meta: "Clouds / sunset light",
+    text: "Heavy clouds catch warm low light while the upper sky stays quiet and blue.",
+    gradient:
+      "linear-gradient(150deg, #536e82 0%, #8ca6ad 42%, #e9a45d 86%)",
+    url: "./assets/golden-clouds.jpg",
+    frame: "16 / 7",
+    position: "50% 50%",
+  },
+  {
+    title: "Violet Sunset",
+    theme: "sunset",
+    meta: "Sunset / garden line",
+    text: "A purple evening sky closing behind dark trees and a thin glowing horizon.",
+    gradient:
+      "linear-gradient(160deg, #3e355d 0%, #b66da9 45%, #f0a66f 74%, #1b1519 100%)",
+    url: "./assets/violet-sunset.jpg",
+    frame: "16 / 7",
+    position: "50% 48%",
+  },
+  {
+    title: "Deep Star Field",
+    theme: "stars",
+    meta: "Stars / meteor line",
+    text: "A vertical slice of dense stars, cool green night air, and a bright passing trace.",
+    gradient:
+      "linear-gradient(160deg, #02060a 0%, #0b2d33 60%, #244944 100%)",
+    url: "./assets/deep-star-field.jpg",
+    frame: "9 / 16",
+    position: "50% 50%",
+  },
+  {
+    title: "Vineyard Stars",
+    theme: "stars",
+    meta: "Stars / green night",
+    text: "A vivid night sky over leaves lit from below, bright and almost unreal.",
+    gradient:
+      "linear-gradient(160deg, #010407 0%, #0a3a2e 57%, #6c8d25 100%)",
+    url: "./assets/vineyard-stars.jpg",
+    frame: "3 / 4",
+    position: "50% 47%",
+  },
+  {
+    title: "Open Road Clouds",
+    theme: "clouds",
+    meta: "Clouds / road horizon",
+    text: "A low rural road under wide, bright clouds and a calm blue sky.",
+    gradient:
+      "linear-gradient(150deg, #64a4e6 0%, #e7eef7 45%, #d7d7bf 70%, #2f3e2b 100%)",
+    url: "./assets/open-road-clouds.jpg",
+    frame: "16 / 8",
+    position: "50% 50%",
+  },
+  {
+    title: "Yellow Field",
+    theme: "sunrise",
+    meta: "Daylight / field",
+    text: "A clear blue sky and a wide yellow field, bright enough to reset the whole scene.",
+    gradient:
+      "linear-gradient(160deg, #126fd2 0%, #4fa1f1 42%, #f1d915 75%, #2d5c2f 100%)",
+    url: "./assets/yellow-field.jpg",
+    frame: "16 / 7",
+    position: "50% 50%",
+  },
+  {
+    title: "Andriivska Light",
+    theme: "city",
+    meta: "City / winter daylight",
+    text: "A crisp city landmark in winter sun, all turquoise, gold, and blue.",
+    gradient:
+      "linear-gradient(160deg, #0d65c5 0%, #38a0e8 44%, #8fd7dc 72%, #f3bf54 100%)",
+    url: "./assets/andriivska-church.jpg",
+    frame: "3 / 4",
+    position: "50% 43%",
   },
 ];
 
@@ -158,6 +220,8 @@ function setPhoto(index, immediate = false) {
     () => {
       applyTheme(photo.theme);
       photoImage.style.setProperty("--photo-gradient", photo.gradient);
+      photoImage.style.setProperty("--photo-position", photo.position || "center");
+      document.querySelector(".photo-frame").style.setProperty("--frame-ratio", photo.frame || "4 / 5");
       photoImage.classList.toggle("has-url", Boolean(photo.url));
       if (photo.url) {
         photoImage.style.setProperty("--photo-url", `url("${photo.url}")`);
@@ -182,6 +246,7 @@ function renderFilmstrip() {
     button.className = `thumb${index === activeIndex ? " is-active" : ""}`;
     button.setAttribute("aria-label", `Open ${photo.title}`);
     button.style.setProperty("--photo-gradient", photo.gradient);
+    button.style.setProperty("--photo-position", photo.position || "center");
     if (photo.url) {
       button.classList.add("has-url");
       button.style.setProperty("--photo-url", `url("${photo.url}")`);
