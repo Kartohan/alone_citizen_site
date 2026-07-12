@@ -46,7 +46,7 @@
       </section>
 
       <section class="viewer" id="gallery" aria-label="Photo viewer">
-        <button class="nav-button prev" type="button" aria-label="Previous photo">‹</button>
+        <button class="nav-button prev" type="button" aria-label="Previous photo"></button>
 
         <article class="photo-stage" aria-live="polite">
           <div class="photo-frame">
@@ -54,19 +54,18 @@
             <div class="photo-glass"></div>
           </div>
           <div class="photo-actions">
-            <p class="eyebrow"></p>
             <h2></h2>
-            <button class="details-button" type="button">Опис</button>
+            <p class="photo-meta"></p>
           </div>
         </article>
 
-        <button class="nav-button next" type="button" aria-label="Next photo">›</button>
+        <button class="nav-button next" type="button" aria-label="Next photo"></button>
       </section>
 
       <div class="filmstrip-shell" aria-label="Photo list">
-        <button class="filmstrip-nav filmstrip-prev" type="button" aria-label="Previous thumbnails">‹</button>
+        <button class="filmstrip-nav filmstrip-prev" type="button" aria-label="Previous thumbnails"></button>
         <footer class="filmstrip"></footer>
-        <button class="filmstrip-nav filmstrip-next" type="button" aria-label="Next thumbnails">›</button>
+        <button class="filmstrip-nav filmstrip-next" type="button" aria-label="Next thumbnails"></button>
       </div>
 
       <div class="timer-cursor" aria-hidden="true"></div>
@@ -100,18 +99,6 @@
         </form>
       </dialog>
 
-      <dialog class="details-dialog" aria-labelledby="details-title">
-        <div class="details-card">
-          <div class="dialog-head">
-            <div>
-              <p class="details-meta"></p>
-              <h2 id="details-title"></h2>
-            </div>
-            <button class="details-close close-button" type="button" aria-label="Close">×</button>
-          </div>
-          <p class="details-text"></p>
-        </div>
-      </dialog>
     </main>
 
     <script src="./app.js"></script>

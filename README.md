@@ -15,8 +15,8 @@ The first version already includes 20 real photos in `assets/`.
 - Main arrows, keyboard arrows, or mobile swipe change the active photo.
 - Photos advance automatically every 7 seconds.
 - Hold the left mouse button on the photo, or hold Space, to pause autoplay.
-- The circular cursor indicator shows time left before the next photo.
-- The `Опис` button opens the current photo details.
+- The cursor becomes a circular timer only while it is over the active photo.
+- The current title, tag, and date line stay under the photo.
 
 Photos are configured in `app.js`. Each item supports:
 

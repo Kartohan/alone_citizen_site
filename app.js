@@ -283,8 +283,8 @@ const stage = document.querySelector(".photo-stage");
 const photoFrame = document.querySelector(".photo-frame");
 const photoImage = document.querySelector(".photo-image");
 const caption = {
-  eyebrow: document.querySelector(".eyebrow"),
   title: document.querySelector(".photo-actions h2"),
+  meta: document.querySelector(".photo-meta"),
 };
 const filmstrip = document.querySelector(".filmstrip");
 const filmstripPrev = document.querySelector(".filmstrip-prev");
@@ -293,12 +293,6 @@ const tabs = [...document.querySelectorAll(".theme-tab")];
 const canvas = document.querySelector(".sky-canvas");
 const ctx = canvas.getContext("2d");
 const timerCursor = document.querySelector(".timer-cursor");
-const detailsButton = document.querySelector(".details-button");
-const detailsDialog = document.querySelector(".details-dialog");
-const detailsClose = document.querySelector(".details-close");
-const detailsMeta = document.querySelector(".details-meta");
-const detailsTitle = document.querySelector("#details-title");
-const detailsText = document.querySelector(".details-text");
 const addButton = document.querySelector(".add-button");
 const dialog = document.querySelector(".add-dialog");
 const closeButton = document.querySelector(".close-button");
@@ -320,7 +314,7 @@ let isSpaceHolding = false;
 const AUTOPLAY_DELAY = 7000;
 
 function isPaused() {
-  return isPointerHolding || isSpaceHolding || dialog.open || detailsDialog.open;
+  return isPointerHolding || isSpaceHolding || dialog.open;
 }
 
 function filteredPhotos() {
@@ -341,7 +335,7 @@ function applyTheme(themeName) {
 function setPhoto(index, immediate = false) {
   const list = filteredPhotos();
   if (!list.length) return;
-  activeIndex = (index + list.length) % list.length;
+  activeIndex = Math.max(0, Math.min(index, list.length - 1));
   const photo = list[activeIndex];
   currentPhoto = photo;
   autoplayStartedAt = performance.now();
@@ -358,14 +352,12 @@ function setPhoto(index, immediate = false) {
       photoImage.classList.toggle("has-url", Boolean(photo.url));
       if (photo.url) {
         photoImage.style.setProperty("--photo-url", `url("${photo.url}")`);
-        photoFrame.style.setProperty("--photo-url", `url("${photo.url}")`);
-      } else {
-        photoFrame.style.removeProperty("--photo-url");
       }
       photoImage.setAttribute("aria-label", `${photo.title}, ${photo.meta}`);
-      caption.eyebrow.textContent = photo.meta;
       caption.title.textContent = photo.title;
+      caption.meta.textContent = `Тег: ${photo.meta} / Дата: ${photo.date || "не вказана"}`;
       renderFilmstrip();
+      updateNavigationState();
       stage.classList.remove("is-changing");
     },
     immediate ? 0 : 260,
@@ -389,15 +381,14 @@ function renderFilmstrip() {
     button.addEventListener("click", () => setPhoto(index));
     filmstrip.appendChild(button);
   });
-  filmstrip.querySelector(".thumb.is-active")?.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest",
-    inline: "center",
-  });
+  centerActiveThumb();
 }
 
 function move(direction) {
-  setPhoto(activeIndex + direction);
+  const list = filteredPhotos();
+  const nextIndex = activeIndex + direction;
+  if (nextIndex < 0 || nextIndex >= list.length) return;
+  setPhoto(nextIndex);
 }
 
 function scrollFilmstrip(direction) {
@@ -407,14 +398,22 @@ function scrollFilmstrip(direction) {
   });
 }
 
-function showDetails() {
-  if (!currentPhoto) return;
-  detailsMeta.textContent = `${currentPhoto.meta} / ${currentPhoto.date || "Дата буде додана"}`;
-  detailsTitle.textContent = currentPhoto.title;
-  detailsText.textContent = currentPhoto.text;
-  if (typeof detailsDialog.showModal === "function") {
-    detailsDialog.showModal();
-  }
+function centerActiveThumb() {
+  const activeThumb = filmstrip.querySelector(".thumb.is-active");
+  if (!activeThumb) return;
+  const target =
+    activeThumb.offsetLeft - filmstrip.clientWidth / 2 + activeThumb.clientWidth / 2;
+  filmstrip.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+}
+
+function updateNavigationState() {
+  const list = filteredPhotos();
+  document.querySelector(".prev").classList.toggle("is-hidden", activeIndex <= 0);
+  document.querySelector(".next").classList.toggle("is-hidden", activeIndex >= list.length - 1);
+
+  const maxScrollLeft = Math.max(0, filmstrip.scrollWidth - filmstrip.clientWidth - 2);
+  filmstripPrev.classList.toggle("is-hidden", filmstrip.scrollLeft <= 2);
+  filmstripNext.classList.toggle("is-hidden", filmstrip.scrollLeft >= maxScrollLeft);
 }
 
 function resizeCanvas() {
@@ -477,7 +476,11 @@ function animateAutoplay(now) {
     const progress = Math.min(1, elapsed / AUTOPLAY_DELAY);
     timerCursor.style.setProperty("--progress", progress.toFixed(3));
     if (elapsed >= AUTOPLAY_DELAY) {
-      move(1);
+      if (activeIndex < filteredPhotos().length - 1) {
+        move(1);
+      } else {
+        autoplayStartedAt = now;
+      }
     }
   }
   requestAnimationFrame(animateAutoplay);
@@ -500,10 +503,9 @@ addButton.addEventListener("click", () => {
 });
 
 closeButton.addEventListener("click", () => dialog.close());
-detailsButton.addEventListener("click", showDetails);
-detailsClose.addEventListener("click", () => detailsDialog.close());
 filmstripPrev.addEventListener("click", () => scrollFilmstrip(-1));
 filmstripNext.addEventListener("click", () => scrollFilmstrip(1));
+filmstrip.addEventListener("scroll", updateNavigationState, { passive: true });
 
 addForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -548,7 +550,6 @@ window.addEventListener("keyup", (event) => {
 photoFrame.addEventListener("pointerdown", (event) => {
   if (event.button !== 0 && event.pointerType === "mouse") return;
   isPointerHolding = true;
-  photoFrame.setPointerCapture?.(event.pointerId);
 });
 
 photoFrame.addEventListener("pointerup", () => {
@@ -559,10 +560,21 @@ photoFrame.addEventListener("pointercancel", () => {
   isPointerHolding = false;
 });
 
-window.addEventListener("pointermove", (event) => {
+photoFrame.addEventListener("pointerenter", (event) => {
   if (event.pointerType === "touch") return;
+  photoFrame.classList.add("is-timer-active");
   timerCursor.classList.add("is-visible");
+});
+
+photoFrame.addEventListener("pointermove", (event) => {
+  if (event.pointerType === "touch") return;
   timerCursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+});
+
+photoFrame.addEventListener("pointerleave", () => {
+  isPointerHolding = false;
+  photoFrame.classList.remove("is-timer-active");
+  timerCursor.classList.remove("is-visible", "is-paused");
 });
 
 let touchStartX = 0;
@@ -583,6 +595,7 @@ window.addEventListener(
 );
 
 window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize", updateNavigationState);
 resizeCanvas();
 setPhoto(0, true);
 animateSky();
