@@ -40,7 +40,7 @@ const photos = [
     gradient:
       "linear-gradient(150deg, #536e82 0%, #8ca6ad 42%, #e9a45d 86%)",
     url: "./assets/golden-clouds.jpg",
-    frame: "16 / 7",
+    frame: "4056 / 1872",
     position: "50% 50%",
   },
   {
@@ -51,7 +51,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #3e355d 0%, #b66da9 45%, #f0a66f 74%, #1b1519 100%)",
     url: "./assets/violet-sunset.jpg",
-    frame: "16 / 7",
+    frame: "1280 / 576",
     position: "50% 48%",
   },
   {
@@ -84,7 +84,7 @@ const photos = [
     gradient:
       "linear-gradient(150deg, #64a4e6 0%, #e7eef7 45%, #d7d7bf 70%, #2f3e2b 100%)",
     url: "./assets/open-road-clouds.jpg",
-    frame: "16 / 8",
+    frame: "1280 / 670",
     position: "50% 50%",
   },
   {
@@ -95,7 +95,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #126fd2 0%, #4fa1f1 42%, #f1d915 75%, #2d5c2f 100%)",
     url: "./assets/yellow-field.jpg",
-    frame: "16 / 7",
+    frame: "4000 / 1800",
     position: "50% 50%",
   },
   {
@@ -183,7 +183,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #6b7184 0%, #f4ae6f 48%, #e35b3d 74%, #17191f 100%)",
     url: "./assets/soft-city-sunset.jpg",
-    frame: "16 / 7",
+    frame: "4056 / 1872",
     position: "50% 50%",
   },
   {
@@ -205,7 +205,7 @@ const photos = [
     gradient:
       "linear-gradient(160deg, #2e2336 0%, #a94158 40%, #e24b2d 68%, #0b0c11 100%)",
     url: "./assets/red-city-sunset.jpg",
-    frame: "16 / 7",
+    frame: "4056 / 1872",
     position: "50% 50%",
   },
   {

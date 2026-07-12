@@ -272,7 +272,7 @@ a {
   align-items: center;
   align-content: start;
   gap: 18px;
-  min-height: calc(clamp(430px, 74svh, 820px) + 60px);
+  min-height: 0;
   overflow-anchor: none;
 }
 
@@ -305,8 +305,8 @@ a {
 .photo-frame.is-timer-active {
   transform: translateY(-6px);
   box-shadow:
-    0 18px 46px rgba(0, 0, 0, 0.22),
-    0 0 34px color-mix(in srgb, var(--accent), transparent 72%);
+    0 14px 34px rgba(0, 0, 0, 0.18),
+    0 0 18px color-mix(in srgb, var(--accent), transparent 82%);
 }
 
 .photo-frame:hover .photo-image,
@@ -677,7 +677,7 @@ a {
   .photo-stage {
     grid-template-columns: 1fr;
     gap: 18px;
-    min-height: calc(clamp(330px, 62svh, 560px) + 58px);
+    min-height: 0;
   }
 
   .photo-frame {
