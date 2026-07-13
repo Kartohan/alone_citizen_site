@@ -22,6 +22,7 @@ body {
   width: 100%;
   min-height: 100%;
   margin: 0;
+  overflow-anchor: none;
   scroll-behavior: smooth;
 }
 
@@ -267,10 +268,13 @@ a {
 }
 
 .photo-stage {
+  --photo-slot-height: min(58svh, 560px);
   display: grid;
   grid-template-columns: minmax(280px, 0.92fr);
+  grid-template-rows: var(--photo-slot-height) auto;
   align-items: center;
   align-content: start;
+  justify-items: center;
   gap: 18px;
   min-height: 0;
   overflow-anchor: none;
@@ -279,7 +283,7 @@ a {
 .photo-frame {
   position: relative;
   --frame-aspect: 0.8;
-  width: min(78vw, calc(74svh * var(--frame-aspect)), calc(820px * var(--frame-aspect)));
+  width: min(78vw, calc(var(--photo-slot-height) * var(--frame-aspect)), 880px);
   aspect-ratio: var(--frame-ratio, 4 / 5);
   max-width: 880px;
   margin: 0 auto;
@@ -290,6 +294,7 @@ a {
   background: transparent;
   filter: none;
   transform: none;
+  overflow-anchor: none;
   transition:
     transform 240ms ease,
     box-shadow 240ms ease,
@@ -676,6 +681,7 @@ a {
 
   .photo-stage {
     grid-template-columns: 1fr;
+    --photo-slot-height: min(54svh, 500px);
     gap: 18px;
     min-height: 0;
   }
@@ -683,7 +689,6 @@ a {
   .photo-frame {
     aspect-ratio: var(--frame-ratio, 3 / 4);
     max-width: 100%;
-    max-height: 62svh;
   }
 
   .photo-actions {
@@ -730,8 +735,8 @@ a {
     font-size: 0.72rem;
   }
 
-  .photo-frame {
-    max-height: 58svh;
+  .photo-stage {
+    --photo-slot-height: min(50svh, 430px);
   }
 
   .thumb {
