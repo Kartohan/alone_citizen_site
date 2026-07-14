@@ -8,7 +8,7 @@
       name="description"
       content="Atmospheric photo gallery for sunsets, moon, stars, clouds, sunrise, and city scenes."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260714-soft-section-blend" />
+    <link rel="stylesheet" href="./styles.css?v=20260714-language-blend" />
   </head>
   <body>
     <main class="experience" data-theme="sunset">
@@ -20,32 +20,36 @@
       <header class="topbar" aria-label="Site header">
         <a class="brand" href="#home" aria-label="alone.citizen home">
           <span class="brand-mark"></span>
-          <span>alone.citizen</span>
+          <span data-i18n="brand">alone.citizen</span>
         </a>
-        <nav class="theme-tabs" aria-label="Photo themes">
-          <button class="theme-tab is-active" type="button" data-filter="all">All</button>
-          <button class="theme-tab" type="button" data-filter="sunset">Sunset</button>
-          <button class="theme-tab" type="button" data-filter="sunrise">Sunrise</button>
-          <button class="theme-tab" type="button" data-filter="moon">Moon</button>
-          <button class="theme-tab" type="button" data-filter="clouds">Clouds</button>
-          <button class="theme-tab" type="button" data-filter="city">City</button>
+        <nav class="theme-tabs" aria-label="Photo themes" data-i18n-attr="aria-label:themeNav">
+          <button class="theme-tab is-active" type="button" data-filter="all" data-i18n="filterAll">All</button>
+          <button class="theme-tab" type="button" data-filter="sunset" data-i18n="filterSunset">Sunset</button>
+          <button class="theme-tab" type="button" data-filter="sunrise" data-i18n="filterSunrise">Sunrise</button>
+          <button class="theme-tab" type="button" data-filter="moon" data-i18n="filterMoon">Moon</button>
+          <button class="theme-tab" type="button" data-filter="clouds" data-i18n="filterClouds">Clouds</button>
+          <button class="theme-tab" type="button" data-filter="city" data-i18n="filterCity">City</button>
         </nav>
+        <div class="language-switch" role="group" aria-label="Language" data-i18n-attr="aria-label:language">
+          <button class="language-button is-active" type="button" data-lang="en">EN</button>
+          <button class="language-button" type="button" data-lang="uk">UA</button>
+        </div>
       </header>
 
       <section class="hero" id="home" aria-label="Intro">
         <div class="hero-content">
-          <p class="hero-kicker">Atmospheric photo archive</p>
-          <h1>alone.citizen</h1>
-          <p>
+          <p class="hero-kicker" data-i18n="kicker">Atmospheric photo archive</p>
+          <h1 data-i18n="brand">alone.citizen</h1>
+          <p data-i18n="heroCopy">
             Тихі фрагменти неба, міста і світла: заходи сонця, місяць, зорі,
             зимові вулиці і хмари, які на мить роблять звичайний день кінематографічним.
           </p>
-          <a class="scroll-link" href="#gallery">До галереї</a>
+          <a class="scroll-link" href="#gallery" data-i18n="scrollLink">До галереї</a>
         </div>
       </section>
 
       <section class="viewer" id="gallery" aria-label="Photo viewer">
-        <button class="nav-button prev" type="button" aria-label="Previous photo"></button>
+        <button class="nav-button prev" type="button" aria-label="Previous photo" data-i18n-attr="aria-label:previousPhoto"></button>
 
         <article class="photo-stage" aria-live="polite">
           <div class="photo-frame">
@@ -56,13 +60,13 @@
           </div>
         </article>
 
-        <button class="nav-button next" type="button" aria-label="Next photo"></button>
+        <button class="nav-button next" type="button" aria-label="Next photo" data-i18n-attr="aria-label:nextPhoto"></button>
       </section>
 
-      <div class="filmstrip-shell" aria-label="Photo list">
-        <button class="filmstrip-nav filmstrip-prev" type="button" aria-label="Previous thumbnails"></button>
+      <div class="filmstrip-shell" aria-label="Photo list" data-i18n-attr="aria-label:photoList">
+        <button class="filmstrip-nav filmstrip-prev" type="button" aria-label="Previous thumbnails" data-i18n-attr="aria-label:previousThumbs"></button>
         <footer class="filmstrip"></footer>
-        <button class="filmstrip-nav filmstrip-next" type="button" aria-label="Next thumbnails"></button>
+        <button class="filmstrip-nav filmstrip-next" type="button" aria-label="Next thumbnails" data-i18n-attr="aria-label:nextThumbs"></button>
       </div>
 
       <div class="timer-cursor" aria-hidden="true"></div>
@@ -70,19 +74,19 @@
       <dialog class="add-dialog" aria-labelledby="add-title">
         <form class="add-form" method="dialog">
           <div class="dialog-head">
-            <h2 id="add-title">Add photo</h2>
-            <button class="close-button" type="button" aria-label="Close">×</button>
+            <h2 id="add-title" data-i18n="addPhoto">Add photo</h2>
+            <button class="close-button" type="button" aria-label="Close" data-i18n-attr="aria-label:close">×</button>
           </div>
           <label>
-            <span>Image</span>
+            <span data-i18n="image">Image</span>
             <input class="file-input" type="file" accept="image/*" required />
           </label>
           <label>
-            <span>Title</span>
-            <input class="title-input" type="text" maxlength="42" placeholder="Evening sky" />
+            <span data-i18n="title">Title</span>
+            <input class="title-input" type="text" maxlength="42" placeholder="Evening sky" data-i18n-attr="placeholder:titlePlaceholder" />
           </label>
           <label>
-            <span>Theme</span>
+            <span data-i18n="theme">Theme</span>
             <select class="theme-input">
               <option value="sunset">Sunset</option>
               <option value="sunrise">Sunrise</option>
@@ -92,12 +96,12 @@
               <option value="city">City</option>
             </select>
           </label>
-          <button class="submit-button" type="submit">Preview</button>
+          <button class="submit-button" type="submit" data-i18n="preview">Preview</button>
         </form>
       </dialog>
 
     </main>
 
-    <script src="./app.js?v=20260714-soft-section-blend"></script>
+    <script src="./app.js?v=20260714-language-blend"></script>
   </body>
 </html>

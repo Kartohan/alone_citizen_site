@@ -107,7 +107,7 @@ a {
   left: 0;
   z-index: 5;
   display: grid;
-  grid-template-columns: auto minmax(0, max-content);
+  grid-template-columns: auto minmax(0, max-content) auto;
   justify-content: center;
   align-items: center;
   column-gap: clamp(16px, 3vw, 34px);
@@ -173,6 +173,38 @@ a {
   color: var(--text);
 }
 
+.language-switch {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  min-width: 86px;
+  min-height: 36px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.language-button {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  min-height: 28px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: "Trebuchet MS", Verdana, sans-serif;
+  font-size: 0.72rem;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.language-button.is-active {
+  background: rgba(255, 255, 255, 0.22);
+  color: var(--text);
+}
+
 .hero {
   position: relative;
   z-index: 3;
@@ -195,19 +227,19 @@ a {
 
 .hero::after {
   position: absolute;
-  inset: auto 0 clamp(-190px, -24svh, -120px);
+  inset: auto 0 clamp(-150px, -18svh, -88px);
   z-index: -1;
-  height: clamp(280px, 42svh, 460px);
+  height: clamp(220px, 34svh, 380px);
   content: "";
   background:
     linear-gradient(
       180deg,
       transparent 0%,
-      rgba(0, 0, 0, 0.18) 32%,
-      color-mix(in srgb, var(--bg-b), transparent 62%) 58%,
+      rgba(0, 0, 0, 0.12) 30%,
+      color-mix(in srgb, var(--bg-b), transparent 72%) 60%,
       transparent 100%
     );
-  filter: blur(18px);
+  filter: blur(28px);
   transform: translateZ(0);
   pointer-events: none;
 }
@@ -275,8 +307,27 @@ a {
 }
 
 .viewer::before {
-  display: none;
-  content: none;
+  position: absolute;
+  left: 50%;
+  top: calc(var(--viewer-overlap) * -1 - 90px);
+  z-index: -1;
+  width: 100vw;
+  height: clamp(260px, 42svh, 460px);
+  content: "";
+  background:
+    radial-gradient(ellipse at 50% 34%, color-mix(in srgb, var(--accent), transparent 82%), transparent 58%),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--bg-a), transparent 88%) 22%,
+      color-mix(in srgb, var(--bg-b), transparent 70%) 54%,
+      transparent 100%
+    );
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 76%, transparent 100%);
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .photo-stage {
@@ -652,14 +703,18 @@ a {
 
   .topbar {
     align-items: center;
-    grid-template-columns: auto;
+    grid-template-columns: auto auto;
     justify-content: center;
     gap: 12px;
     padding: 14px 12px 12px;
   }
 
   .brand {
-    justify-self: center;
+    justify-self: end;
+  }
+
+  .language-switch {
+    justify-self: start;
   }
 
   .theme-tabs {

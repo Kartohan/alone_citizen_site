@@ -278,6 +278,85 @@ const themes = {
   },
 };
 
+const translations = {
+  en: {
+    documentTitle: "alone.citizen - Atmospheric Photo Gallery",
+    description:
+      "Atmospheric photo gallery for sunsets, moon, stars, clouds, sunrise, and city scenes.",
+    brand: "alone.citizen",
+    themeNav: "Photo themes",
+    language: "Language",
+    filterAll: "All",
+    filterSunset: "Sunset",
+    filterSunrise: "Sunrise",
+    filterMoon: "Moon",
+    filterClouds: "Clouds",
+    filterCity: "City",
+    kicker: "Atmospheric photo archive",
+    heroCopy:
+      "Quiet fragments of sky, city, and light: sunsets, moon, stars, winter streets, and clouds that make an ordinary day cinematic for a moment.",
+    scrollLink: "To gallery",
+    previousPhoto: "Previous photo",
+    nextPhoto: "Next photo",
+    photoList: "Photo list",
+    previousThumbs: "Previous thumbnails",
+    nextThumbs: "Next thumbnails",
+    close: "Close",
+    addPhoto: "Add photo",
+    image: "Image",
+    title: "Title",
+    titlePlaceholder: "Evening sky",
+    theme: "Theme",
+    themeSunset: "Sunset",
+    themeSunrise: "Sunrise",
+    themeClouds: "Clouds",
+    themeMoon: "Moon",
+    themeStars: "Stars",
+    themeCity: "City",
+    preview: "Preview",
+    openPhoto: "Open",
+    noDate: "undated",
+  },
+  uk: {
+    documentTitle: "Самотній Сум'янин - Атмосферна фотогалерея",
+    description:
+      "Атмосферна фотогалерея заходів сонця, місяця, зірок, хмар, світанків і міських сцен.",
+    brand: "Самотній Сум'янин",
+    themeNav: "Теми фото",
+    language: "Мова",
+    filterAll: "Усі",
+    filterSunset: "Захід",
+    filterSunrise: "Світанок",
+    filterMoon: "Місяць",
+    filterClouds: "Хмари",
+    filterCity: "Місто",
+    kicker: "Атмосферний фотоархів",
+    heroCopy:
+      "Тихі фрагменти неба, міста і світла: заходи сонця, місяць, зорі, зимові вулиці і хмари, які на мить роблять звичайний день кінематографічним.",
+    scrollLink: "До галереї",
+    previousPhoto: "Попереднє фото",
+    nextPhoto: "Наступне фото",
+    photoList: "Список фото",
+    previousThumbs: "Попередні мініатюри",
+    nextThumbs: "Наступні мініатюри",
+    close: "Закрити",
+    addPhoto: "Додати фото",
+    image: "Зображення",
+    title: "Назва",
+    titlePlaceholder: "Вечірнє небо",
+    theme: "Тема",
+    themeSunset: "Захід",
+    themeSunrise: "Світанок",
+    themeClouds: "Хмари",
+    themeMoon: "Місяць",
+    themeStars: "Зорі",
+    themeCity: "Місто",
+    preview: "Попередній перегляд",
+    openPhoto: "Відкрити",
+    noDate: "без дати",
+  },
+};
+
 const experience = document.querySelector(".experience");
 const stage = document.querySelector(".photo-stage");
 const photoFrame = document.querySelector(".photo-frame");
@@ -299,9 +378,12 @@ const addForm = document.querySelector(".add-form");
 const fileInput = document.querySelector(".file-input");
 const titleInput = document.querySelector(".title-input");
 const themeInput = document.querySelector(".theme-input");
+const languageButtons = [...document.querySelectorAll(".language-button")];
+const descriptionMeta = document.querySelector('meta[name="description"]');
 
 let activeIndex = 0;
 let activeFilter = "all";
+let activeLanguage = localStorage.getItem("aloneCitizenLanguage") || "en";
 let particles = [];
 let width = 0;
 let height = 0;
@@ -319,6 +401,52 @@ function isPaused() {
 function filteredPhotos() {
   if (activeFilter === "all") return photos;
   return photos.filter((photo) => photo.theme === activeFilter);
+}
+
+function t(key) {
+  return translations[activeLanguage][key] || translations.en[key] || key;
+}
+
+function localPhotoValue(photo, key) {
+  return photo[activeLanguage]?.[key] || photo[key];
+}
+
+function applyLanguage(language) {
+  activeLanguage = translations[language] ? language : "en";
+  localStorage.setItem("aloneCitizenLanguage", activeLanguage);
+  document.documentElement.lang = activeLanguage;
+  document.title = t("documentTitle");
+  descriptionMeta?.setAttribute("content", t("description"));
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    element.textContent = t(element.dataset.i18n);
+  });
+
+  document.querySelectorAll("[data-i18n-attr]").forEach((element) => {
+    element.dataset.i18nAttr.split(";").forEach((item) => {
+      const [attr, key] = item.split(":");
+      if (attr && key) element.setAttribute(attr, t(key));
+    });
+  });
+
+  languageButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.lang === activeLanguage);
+    button.setAttribute("aria-pressed", String(button.dataset.lang === activeLanguage));
+  });
+
+  themeInput.querySelectorAll("option").forEach((option) => {
+    option.textContent = t(`theme${option.value[0].toUpperCase()}${option.value.slice(1)}`);
+  });
+
+  renderFilmstrip();
+  updateCaption();
+}
+
+function updateCaption() {
+  const title = localPhotoValue(currentPhoto, "title");
+  const meta = localPhotoValue(currentPhoto, "meta");
+  photoImage.alt = `${title}, ${meta}`;
+  caption.line.textContent = `${title} - ${meta} / ${currentPhoto.date || t("noDate")}`;
 }
 
 function applyTheme(themeName) {
@@ -357,8 +485,7 @@ function setPhoto(index, immediate = false) {
       } else {
         photoImage.removeAttribute("src");
       }
-      photoImage.alt = `${photo.title}, ${photo.meta}`;
-      caption.line.textContent = `${photo.title} - ${photo.meta} / ${photo.date || "без дати"}`;
+      updateCaption();
       renderFilmstrip();
       updateNavigationState();
       stage.classList.remove("is-changing");
@@ -374,7 +501,7 @@ function renderFilmstrip() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `thumb${index === activeIndex ? " is-active" : ""}`;
-    button.setAttribute("aria-label", `Open ${photo.title}`);
+    button.setAttribute("aria-label", `${t("openPhoto")} ${localPhotoValue(photo, "title")}`);
     button.style.setProperty("--photo-gradient", photo.gradient);
     button.style.setProperty("--photo-position", photo.position || "center");
     if (photo.url) {
@@ -499,6 +626,10 @@ tabs.forEach((tab) => {
   });
 });
 
+languageButtons.forEach((button) => {
+  button.addEventListener("click", () => applyLanguage(button.dataset.lang));
+});
+
 addButton?.addEventListener("click", () => {
   if (typeof dialog.showModal === "function") {
     dialog.showModal();
@@ -609,6 +740,7 @@ window.addEventListener("pageshow", () => {
 });
 
 resizeCanvas();
+applyLanguage(activeLanguage);
 setPhoto(0, true);
 animateSky();
 requestAnimationFrame(animateAutoplay);
