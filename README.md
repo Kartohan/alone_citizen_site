@@ -3,6 +3,9 @@
 Static cinematic photo gallery with an intro screen, theme-based atmospheres,
 animated transitions, and responsive desktop/mobile controls.
 
+The site can run as a plain static gallery, or connect to Supabase for a
+persistent admin panel, image storage, and analytics.
+
 ## How To Use
 
 Open `index.html` in a browser, or serve the folder with any static server.
@@ -35,4 +38,19 @@ To use real photos later, place images in `assets/` and add a `url`, for example
 url: "./assets/sunset-01.jpg"
 ```
 
-The `Add` button lets you preview a local image in the browser and assign a theme. This preview is temporary because there is no backend yet.
+Use `admin.html` for persistent photo management after Supabase is configured.
+
+## Supabase Admin
+
+1. Create a Supabase project.
+2. Open the SQL editor and run `supabase-schema.sql`.
+3. Create your Auth user in Supabase.
+4. Run the final admin insert shown at the bottom of `supabase-schema.sql` with
+   your email.
+5. Put the project URL and anon key in `supabase-config.js`.
+6. Open `admin.html`, sign in, and add photos.
+
+Images are stored in the public `gallery-images` Storage bucket. Photo metadata
+lives in `gallery_photos`, while page and photo views are written to
+`analytics_events`. If Supabase is not configured or has no published photos
+yet, the public gallery keeps using the bundled local photos.

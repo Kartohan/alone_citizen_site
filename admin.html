@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gallery Admin - Самотній Сум'янин</title>
+    <link rel="stylesheet" href="./admin.css?v=20260715-admin" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <section class="auth-panel" data-auth-panel>
+        <div>
+          <p class="eyebrow">Gallery Admin</p>
+          <h1>Самотній Сум'янин</h1>
+          <p class="muted">Керування фото, публікацією і переглядами галереї.</p>
+        </div>
+
+        <form class="login-form" data-login-form>
+          <label>
+            Email
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">Sign in</button>
+          <p class="status" data-login-status></p>
+        </form>
+      </section>
+
+      <section class="dashboard is-hidden" data-dashboard>
+        <header class="admin-topbar">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h1>Gallery Control</h1>
+          </div>
+          <div class="topbar-actions">
+            <a href="./index.html">Open site</a>
+            <button type="button" data-refresh>Refresh</button>
+            <button type="button" data-sign-out>Sign out</button>
+          </div>
+        </header>
+
+        <section class="metric-grid" aria-label="Analytics overview">
+          <article class="metric">
+            <span>Page views</span>
+            <strong data-metric="pageViews">0</strong>
+          </article>
+          <article class="metric">
+            <span>Photo views</span>
+            <strong data-metric="photoViews">0</strong>
+          </article>
+          <article class="metric">
+            <span>Visitors</span>
+            <strong data-metric="visitors">0</strong>
+          </article>
+          <article class="metric">
+            <span>Published</span>
+            <strong data-metric="published">0</strong>
+          </article>
+        </section>
+
+        <section class="admin-layout">
+          <form class="photo-form" data-photo-form>
+            <input type="hidden" name="id" />
+            <input type="hidden" name="storage_path" />
+            <input type="hidden" name="image_url" />
+
+            <div class="form-head">
+              <div>
+                <p class="eyebrow">Photo</p>
+                <h2 data-form-title>Add photo</h2>
+              </div>
+              <button type="button" data-reset-form>New</button>
+            </div>
+
+            <label>
+              Image
+              <input type="file" name="image" accept="image/*" />
+            </label>
+            <label>
+              Title EN
+              <input type="text" name="title_en" maxlength="80" required />
+            </label>
+            <label>
+              Title UA
+              <input type="text" name="title_uk" maxlength="80" />
+            </label>
+            <label>
+              Meta EN
+              <input type="text" name="meta_en" maxlength="120" placeholder="Sunset / city haze" />
+            </label>
+            <label>
+              Meta UA
+              <input type="text" name="meta_uk" maxlength="120" placeholder="Захід / місто" />
+            </label>
+            <label>
+              Description EN
+              <textarea name="text_en" rows="3"></textarea>
+            </label>
+            <label>
+              Description UA
+              <textarea name="text_uk" rows="3"></textarea>
+            </label>
+
+            <div class="two-col">
+              <label>
+                Theme
+                <select name="theme">
+                  <option value="sunset">Sunset</option>
+                  <option value="sunrise">Sunrise</option>
+                  <option value="clouds">Clouds</option>
+                  <option value="moon">Moon</option>
+                  <option value="stars">Stars</option>
+                  <option value="city">City</option>
+                </select>
+              </label>
+              <label>
+                Sort order
+                <input type="number" name="sort_order" value="0" />
+              </label>
+            </div>
+
+            <div class="two-col">
+              <label>
+                Frame
+                <input type="text" name="frame" value="4 / 5" placeholder="4 / 5" />
+              </label>
+              <label>
+                Position
+                <input type="text" name="position" value="50% 50%" placeholder="50% 50%" />
+              </label>
+            </div>
+
+            <label>
+              Gradient
+              <input type="text" name="gradient" placeholder="linear-gradient(...)" />
+            </label>
+            <label class="check-row">
+              <input type="checkbox" name="published" checked />
+              Published
+            </label>
+
+            <div class="form-actions">
+              <button type="submit">Save photo</button>
+              <button type="button" class="danger" data-delete-photo disabled>Delete</button>
+            </div>
+            <p class="status" data-form-status></p>
+          </form>
+
+          <section class="photo-table-shell">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Library</p>
+                <h2>Photos</h2>
+              </div>
+              <span data-count>0 photos</span>
+            </div>
+            <div class="photo-table" data-photo-list></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase-config.js?v=20260715-admin"></script>
+    <script src="./admin.js?v=20260715-admin"></script>
+  </body>
+</html>

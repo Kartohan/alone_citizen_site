@@ -1,4 +1,4 @@
-const photos = [
+const fallbackPhotos = [
   {
     title: "Moon Beside Brick",
     theme: "moon",
@@ -221,6 +221,10 @@ const photos = [
   },
 ];
 
+let photos = fallbackPhotos.map((photo, index) =>
+  normalizePhoto({ ...photo, id: `local-${index + 1}`, sort_order: index }),
+);
+
 const themes = {
   sunset: {
     bgA: "#1b1420",
@@ -380,6 +384,16 @@ const titleInput = document.querySelector(".title-input");
 const themeInput = document.querySelector(".theme-input");
 const languageButtons = [...document.querySelectorAll(".language-button")];
 const descriptionMeta = document.querySelector('meta[name="description"]');
+const supabaseConfig = window.ALONE_CITIZEN_SUPABASE || {};
+const hasSupabaseConfig =
+  Boolean(supabaseConfig.url) &&
+  Boolean(supabaseConfig.anonKey) &&
+  !String(supabaseConfig.url).includes("YOUR_") &&
+  !String(supabaseConfig.anonKey).includes("YOUR_");
+const supabaseClient =
+  hasSupabaseConfig && window.supabase
+    ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
+    : null;
 
 let activeIndex = 0;
 let activeFilter = "all";
@@ -392,7 +406,96 @@ let autoplayStartedAt = performance.now();
 let pauseStartedAt = 0;
 let isPointerHolding = false;
 let isSpaceHolding = false;
+let lastTrackedPhotoId = null;
 const AUTOPLAY_DELAY = 7000;
+
+function normalizePhoto(photo, index = 0) {
+  const title = photo.title_en || photo.title || "Untitled";
+  const meta = photo.meta_en || photo.meta || "";
+  return {
+    id: photo.id || photo.slug || `photo-${index + 1}`,
+    title,
+    theme: photo.theme || "sunset",
+    meta,
+    text: photo.text_en || photo.text || "",
+    gradient:
+      photo.gradient ||
+      "linear-gradient(160deg, var(--bg-a), var(--bg-b) 48%, var(--bg-c))",
+    url: photo.image_url || photo.public_url || photo.url,
+    storagePath: photo.storage_path || null,
+    frame: photo.frame || "4 / 5",
+    position: photo.position || "50% 50%",
+    date: photo.photo_date || photo.date || "",
+    sortOrder: photo.sort_order ?? index,
+    published: photo.published ?? true,
+    uk:
+      photo.title_uk || photo.meta_uk || photo.text_uk
+        ? {
+            title: photo.title_uk || title,
+            meta: photo.meta_uk || meta,
+            text: photo.text_uk || photo.text_en || photo.text || "",
+          }
+        : photo.uk,
+  };
+}
+
+function getVisitorId() {
+  const key = "aloneCitizenVisitorId";
+  const existing = localStorage.getItem(key);
+  if (existing) return existing;
+  const id =
+    typeof globalThis.crypto?.randomUUID === "function"
+      ? globalThis.crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  localStorage.setItem(key, id);
+  return id;
+}
+
+function trackEvent(eventName, photoId = null) {
+  if (!supabaseClient) return;
+  supabaseClient
+    .from("analytics_events")
+    .insert({
+      event_name: eventName,
+      photo_id: photoId,
+      visitor_id: getVisitorId(),
+      path: window.location.pathname,
+      language: activeLanguage,
+      viewport_width: window.innerWidth,
+      viewport_height: window.innerHeight,
+    })
+    .then(({ error }) => {
+      if (error) console.warn("Analytics event was not saved", error);
+    });
+}
+
+function trackPhotoView(photo) {
+  if (!photo?.id || String(photo.id).startsWith("local-")) return;
+  if (lastTrackedPhotoId === photo.id) return;
+  lastTrackedPhotoId = photo.id;
+  trackEvent("photo_view", photo.id);
+}
+
+async function loadPublishedPhotos() {
+  if (!supabaseClient) return;
+  const { data, error } = await supabaseClient
+    .from("gallery_photos")
+    .select(
+      "id,title,title_en,title_uk,meta,meta_en,meta_uk,text,text_en,text_uk,theme,gradient,image_url,storage_path,frame,position,photo_date,sort_order,published",
+    )
+    .eq("published", true)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.warn("Could not load Supabase gallery, using bundled photos", error);
+    return;
+  }
+
+  if (data?.length) {
+    photos = data.map((photo, index) => normalizePhoto(photo, index));
+  }
+}
 
 function isPaused() {
   return isPointerHolding || isSpaceHolding || Boolean(dialog?.open);
@@ -488,6 +591,7 @@ function setPhoto(index, immediate = false) {
       updateCaption();
       renderFilmstrip();
       updateNavigationState();
+      trackPhotoView(photo);
       stage.classList.remove("is-changing");
     },
     immediate ? 0 : 260,
@@ -739,8 +843,14 @@ window.addEventListener("pageshow", () => {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 });
 
-resizeCanvas();
-applyLanguage(activeLanguage);
-setPhoto(0, true);
-animateSky();
-requestAnimationFrame(animateAutoplay);
+async function init() {
+  await loadPublishedPhotos();
+  resizeCanvas();
+  applyLanguage(activeLanguage);
+  setPhoto(0, true);
+  trackEvent("page_view");
+  animateSky();
+  requestAnimationFrame(animateAutoplay);
+}
+
+init();
