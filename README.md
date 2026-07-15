@@ -54,3 +54,21 @@ Images are stored in the public `gallery-images` Storage bucket. Photo metadata
 lives in `gallery_photos`, while page and photo views are written to
 `analytics_events`. If Supabase is not configured or has no published photos
 yet, the public gallery keeps using the bundled local photos.
+
+## Import Bundled Photos
+
+After Supabase is configured, import the 20 local `assets/` photos into the
+database with:
+
+```sh
+SUPABASE_URL="https://your-project.supabase.co" \
+SUPABASE_ANON_KEY="your-publishable-or-anon-key" \
+SUPABASE_ADMIN_EMAIL="admin@example.com" \
+SUPABASE_ADMIN_PASSWORD="admin-password" \
+node scripts/import-local-photos.mjs
+```
+
+The import uses the existing `fallbackPhotos` metadata from `app.js`, uploads
+files to `gallery-images/local/`, and inserts rows into `gallery_photos`. It
+skips photos that already have the same `storage_path`. Add `--replace` to
+delete and re-import matching local photos.
