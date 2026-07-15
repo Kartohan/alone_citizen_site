@@ -35,6 +35,14 @@ function setStatus(element, message, isError = false) {
   element.style.color = isError ? "var(--danger)" : "var(--muted)";
 }
 
+function formatSupabaseError(error) {
+  if (!error?.message) return "Something went wrong.";
+  if (error.message.includes("permission denied for table gallery_photos")) {
+    return "Permission denied for gallery_photos. Check that this login email exists in public.admin_users and matches Supabase Auth exactly.";
+  }
+  return error.message;
+}
+
 function requireClient() {
   if (client) return true;
   setStatus(
@@ -180,7 +188,7 @@ async function refresh() {
     renderPhotos();
     setStatus(formStatus, "");
   } catch (error) {
-    setStatus(formStatus, error.message, true);
+    setStatus(formStatus, formatSupabaseError(error), true);
   }
 }
 
@@ -248,7 +256,7 @@ async function savePhoto(event) {
     await refresh();
     setStatus(formStatus, "Saved.");
   } catch (error) {
-    setStatus(formStatus, error.message, true);
+    setStatus(formStatus, formatSupabaseError(error), true);
   }
 }
 

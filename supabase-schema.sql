@@ -74,6 +74,17 @@ alter table public.admin_users enable row level security;
 alter table public.gallery_photos enable row level security;
 alter table public.analytics_events enable row level security;
 
+grant usage on schema public to anon, authenticated;
+
+grant select on public.gallery_photos to anon, authenticated;
+grant insert, update, delete on public.gallery_photos to authenticated;
+
+grant insert on public.analytics_events to anon, authenticated;
+grant select on public.analytics_events to authenticated;
+grant usage, select on sequence public.analytics_events_id_seq to anon, authenticated;
+
+grant select on public.admin_users to authenticated;
+
 drop policy if exists "Admins can read admin users" on public.admin_users;
 create policy "Admins can read admin users"
 on public.admin_users
